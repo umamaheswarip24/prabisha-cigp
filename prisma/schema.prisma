@@ -1,0 +1,350 @@
+// Prabisha Content Intelligence & Growth Platform (PCIGP)
+// Prisma Schema - Aligned with PRD v1.0 specifications
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  id              String   @id @default(uuid())
+  name            String
+  region          String   @default("UK") // UK, INDIA, GLOBAL
+  settingsJson    String   @default("{}")
+  retentionPolicy String   @default("STANDARD_1_YEAR")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  memberships       UserMembership[]
+  brandProfiles     BrandProfile[]
+  productsServices  ProductService[]
+  evidenceRecords   EvidenceRecord[]
+  claims            Claim[]
+  icpPersonas       ICPPersona[]
+  campaigns         Campaign[]
+  complianceRules   ComplianceRule[]
+  auditEvents       AuditEvent[]
+  aiRequestLogs     AIRequestLog[]
+  historicalContent HistoricalContent[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships     UserMembership[]
+  reviewDecisions ReviewDecision[]
+  auditEvents     AuditEvent[]
+}
+
+model UserMembership {
+  id          String   @id @default(uuid())
+  userId      String
+  workspaceId String
+  role        String   @default("CONTENT_CREATOR") // PLATFORM_ADMIN, MARKETING_LEAD, etc.
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+}
+
+model BrandProfile {
+  id                   String   @id @default(uuid())
+  workspaceId          String
+  companyName          String
+  websitesJson         String   @default("[]")
+  approvedDescriptions String   @default("{}") // { short, long, elevatorPitch }
+  brandVoiceJson       String   @default("{}") // { tone, styleRules, do, dont }
+  marketsJson          String   @default("[\"UK\",\"INDIA\"]")
+  contactDetailsJson   String   @default("{}")
+  version              Int      @default(1)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model ProductService {
+  id                String   @id @default(uuid())
+  workspaceId       String
+  name              String
+  category          String
+  capabilitiesJson  String   @default("[]")
+  limitationsJson   String   @default("[]")
+  targetIndustries  String   @default("[]")
+  pricingRules      String?
+  ctaDestinationUrl String
+  ownerEmail        String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model EvidenceRecord {
+  id               String    @id @default(uuid())
+  workspaceId      String
+  title            String
+  scope            String    @default("CASE_STUDY") // CASE_STUDY, STATISTIC, TESTIMONIAL, CERTIFICATION
+  sourceUrlOrFile  String
+  verifiedData     String
+  permissionStatus String    @default("APPROVED_FOR_PUBLIC") // APPROVED_FOR_PUBLIC, CONFIDENTIAL_INTERNAL
+  owner            String
+  verifiedAt       DateTime  @default(now())
+  expiresAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Claim {
+  id                 String    @id @default(uuid())
+  workspaceId        String
+  exactWording       String
+  evidenceIdsJson    String    @default("[]") // Links to EvidenceRecord
+  allowedContextsJson String   @default("[]")
+  riskLevel          String    @default("LOW") // LOW, MEDIUM, HIGH
+  status             String    @default("APPROVED") // APPROVED, PENDING_REVIEW, EXPIRED, REJECTED
+  reviewer           String
+  reviewDate         DateTime  @default(now())
+  expiresAt          DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model ICPPersona {
+  id                      String   @id @default(uuid())
+  workspaceId             String
+  title                   String
+  industry                String
+  subindustry             String?
+  geographyJson           String   @default("[\"UK\"]")
+  companySizeRange        String
+  revenueBand             String?  // e.g. "£1M - £10M"
+  businessModel           String?  // e.g. "B2B Services", "B2B SaaS"
+  maturity                String?  // e.g. "Early Stage", "Growth / Scaling", "Enterprise"
+  buyingCapacity          String?  // e.g. "High (£25k - £100k+)"
+  buyerRole               String
+  painPointsJson          String   @default("[]")
+  desiredOutcomesJson     String   @default("[]")
+  buyingTriggersJson      String   @default("[]")
+  objectionsJson          String   @default("[]")
+  exclusionsJson          String   @default("[]")
+  jobsToBeDoneJson        String   @default("[]")
+  recommendedProductsJson String   @default("[]")
+  fitScoreWeightsJson     String   @default("{\"industry\":25,\"companySize\":20,\"painRelevance\":30,\"budgetMatch\":25}")
+  clonedFromId            String?
+  version                 Int      @default(1)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  workspace Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id             String   @id @default(uuid())
+  workspaceId    String
+  name           String
+  objective      String
+  icpId          String
+  market         String   @default("UK") // UK, INDIA
+  locale         String   @default("en-GB")
+  channelsJson   String   @default("[\"LINKEDIN\",\"BLOG\"]")
+  funnelStage    String   @default("MID_CONSIDERATION")
+  offerProductId String
+  tone           String   @default("consultative, authoritative, evidence-backed")
+  targetCta      String
+  scheduleStart  DateTime
+  scheduleEnd    DateTime
+  ownerId        String
+  status         String   @default("DRAFT") // DRAFT, ACTIVE, COMPLETED, PAUSED
+  isTemplate     Boolean  @default(false)
+  templateName   String?
+  assetVolume    Int      @default(3)
+  theme          String?
+  rationale      String?
+  successMetrics String?
+  targetKeyword  String?  // e.g. "b2b ai marketing automation uk"
+  searchIntent   String?  @default("INFORMATIONAL_COMMERCIAL") // INFORMATIONAL, COMMERCIAL, TRANSACTIONAL
+  topicCluster   String?  // e.g. "Enterprise Operations AI"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  workspace Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  icp       ICPPersona     @relation(fields: [icpId], references: [id])
+  assets    ContentAsset[]
+}
+
+model ContentAsset {
+  id            String    @id @default(uuid())
+  campaignId    String
+  channel       String    // LINKEDIN, BLOG, EMAIL, etc.
+  format        String    // SOCIAL_POST, LONG_FORM_ARTICLE, etc.
+  status        String    @default("DRAFT") // DRAFT, VALIDATING, NEEDS_REVIEW, APPROVED, SCHEDULED, PUBLISHED, etc.
+  targetCtaUrl  String
+  utmParamsJson String?
+  scheduledDate DateTime?
+  publishedAt   DateTime?
+  publishedBy   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  campaign        Campaign         @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  versions        ContentVersion[]
+  publications    Publication[]
+  metricSnapshots MetricSnapshot[]
+}
+
+model Publication {
+  id            String    @id @default(uuid())
+  assetId       String
+  versionId     String
+  channel       String    // LINKEDIN, BLOG, EMAIL, etc.
+  scheduledAt   DateTime?
+  publishedAt   DateTime?
+  externalId    String?   // External platform ID / post URL
+  status        String    @default("SCHEDULED") // SCHEDULED, PUBLISHED, FAILED, PAUSED
+  exportPackage String?   // Copy-ready markdown/text package with UTM links
+  errorDetails  String?
+  retryCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  asset ContentAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+}
+
+model MetricSnapshot {
+  id               String   @id @default(uuid())
+  assetId          String
+  source           String   @default("MANUAL") // MANUAL, GA4, GSC, CRM, LINKEDIN
+  windowStart      DateTime
+  windowEnd        DateTime
+  impressions      Int      @default(0)
+  clicks           Int      @default(0)
+  conversions      Int      @default(0)
+  qualifiedLeads   Int      @default(0)
+  pipelineValueUsd Float    @default(0.0)
+  attributionModel String   @default("LAST_NON_DIRECT_CLICK") // FIRST_TOUCH, LAST_TOUCH, LINEAR
+  createdAt        DateTime @default(now())
+
+  asset ContentAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+}
+
+model ContentVersion {
+  id               String   @id @default(uuid())
+  assetId          String
+  versionNumber    Int      @default(1)
+  headline         String?
+  body             String
+  callToAction     String
+  hookVariant      String?
+  angleVariant     String?
+  metadataJson     String   @default("{}") // SEO title, wordCount, readability
+  groundingJson    String   @default("{}") // retrievedEvidenceIds, referencedClaimIds
+  modelMetadataJson String  @default("{}") // provider, model, tokensUsed
+  createdBy        String
+  createdAt        DateTime @default(now())
+
+  asset     ContentAsset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  reviews   ReviewDecision[]
+}
+
+model ReviewDecision {
+  id                     String   @id @default(uuid())
+  assetVersionId         String
+  reviewerId             String
+  reviewerName           String
+  decision               String   // APPROVED, CHANGES_REQUESTED, REJECTED
+  reason                 String?
+  riskFlagsJson          String   @default("[]")
+  timestamp              DateTime @default(now())
+
+  version ContentVersion @relation(fields: [assetVersionId], references: [id], onDelete: Cascade)
+  user    User           @relation(fields: [reviewerId], references: [id])
+}
+
+model ComplianceRule {
+  id                      String   @id @default(uuid())
+  workspaceId             String
+  jurisdiction            String   // UK, INDIA, GLOBAL
+  category                String   // ADVERTISING_STANDARDS, PRIVACY_DIRECT_MARKETING, etc.
+  code                    String
+  name                    String
+  description             String
+  sourceUrl               String
+  effectiveDate           DateTime
+  reviewedDate            DateTime
+  severity                String   @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL_BLOCK
+  prohibitedPatternsJson  String   @default("[]")
+  requiredDisclaimersJson String   @default("[]")
+  owner                   String
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model AuditEvent {
+  id             String   @id @default(uuid())
+  workspaceId    String
+  actorId        String
+  actorRole      String
+  action         String   // CLAIM_CREATED, CONTENT_APPROVED, OVERRIDE_COMPLIANCE, etc.
+  entityType     String
+  entityId       String
+  beforeSnapshot String?
+  afterSnapshot  String?
+  ipAddress      String?
+  timestamp      DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [actorId], references: [id])
+}
+
+model AIRequestLog {
+  id               String     @id @default(uuid())
+  workspaceId      String?
+  task             String
+  provider         String
+  model            String
+  latencyMs        Int
+  promptTokens     Int        @default(0)
+  completionTokens Int        @default(0)
+  estimatedCostUsd Float      @default(0.0)
+  status           String     @default("SUCCESS")
+  warningsJson     String     @default("[]")
+  timestamp        DateTime   @default(now())
+
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model HistoricalContent {
+  id           String   @id @default(uuid())
+  workspaceId  String
+  title        String
+  sourceType   String   @default("MARKDOWN") // MARKDOWN, CSV, URL, PAST_CAMPAIGN
+  sourceUrl    String?
+  content      String
+  tagsJson     String   @default("[]")
+  metadataJson String   @default("{}")
+  checksum     String   // SHA256 checksum for duplicate detection
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}

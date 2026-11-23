@@ -1,0 +1,194 @@
+[
+  {
+    "id": "brief-uk-b2b-01",
+    "name": "UK SME AI Automation — Weekly Lead Generation",
+    "market": "UK",
+    "locale": "en-GB",
+    "icp": {
+      "id": "icp-uk-sme-director",
+      "title": "UK SME Managing Director / Operations Lead",
+      "industry": "Professional Services & IT",
+      "targetRole": "Managing Director / COO",
+      "painPoints": ["Repetitive administrative burdens", "Slow client response times", "High manual overheads"],
+      "triggers": ["Rapid team growth", "Operational bottleneck in client onboarding"]
+    },
+    "offer": {
+      "id": "prod-auto-01",
+      "name": "Prabisha AI Business Automation Assessment",
+      "category": "Consulting & Workflow Automation",
+      "approvedClaimIds": ["claim-uk-01", "claim-uk-02"],
+      "ctaUrl": "https://prabisha.co.uk/services/automation-assessment"
+    },
+    "constraints": {
+      "forbiddenPhrases": ["guaranteed #1 ranking", "100% error free", "instant riches", "double your revenue overnight"],
+      "requiredEvidenceIds": ["ev-case-study-01"],
+      "jurisdiction": "UK",
+      "applicableRegulations": ["ASA/CAP Code Rule 3.7", "ASA/CAP Code Rule 3.1"]
+    },
+    "sampleCompliantContent": {
+      "headline": "Streamline Your Service Workflows With Prabisha AI Automation",
+      "body": "Growing UK professional service firms face rising operational overheads. With Prabisha Consulting's enterprise workflow automation, our verified client implementation delivered an audited 42% reduction in repetitive back-office task cycle times across 6 months. Request an initial consultation to review your automation roadmap.",
+      "callToAction": "Book an Automation Assessment",
+      "targetCtaUrl": "https://prabisha.co.uk/services/automation-assessment"
+    },
+    "expectedEvaluation": {
+      "shouldPassOverall": true,
+      "minimumGroundingScore": 85,
+      "complianceViolationsCount": 0
+    }
+  },
+  {
+    "id": "brief-uk-accounting-02",
+    "name": "UK Accounting & FinTech Digital Practice Modernisation",
+    "market": "UK",
+    "locale": "en-GB",
+    "icp": {
+      "id": "icp-uk-fintech-partner",
+      "title": "Senior Partner / Practice Lead at UK Accounting Firm",
+      "industry": "Accounting & Corporate Finance",
+      "targetRole": "Senior Managing Partner",
+      "painPoints": ["Making Tax Digital compliance pressure", "Legacy desktop spreadsheet reliance"],
+      "triggers": ["HMRC compliance deadlines", "Staff retention challenges during tax season"]
+    },
+    "offer": {
+      "id": "prod-cloud-02",
+      "name": "Prabisha Cloud Accounting Migration & Integration Suite",
+      "category": "Cloud Transformation",
+      "approvedClaimIds": ["claim-uk-01"],
+      "ctaUrl": "https://prabisha.co.uk/services/cloud-accounting"
+    },
+    "constraints": {
+      "forbiddenPhrases": ["zero tax guarantee", "foolproof loophole", "eliminate HMRC audits"],
+      "requiredEvidenceIds": ["ev-case-study-01"],
+      "jurisdiction": "UK",
+      "applicableRegulations": ["ASA/CAP Code Rule 3.7", "ICO PECR Marketing Guidelines"]
+    },
+    "sampleCompliantContent": {
+      "headline": "Modernise Your Accounting Practice for Making Tax Digital",
+      "body": "Prabisha Consulting enables UK accountancy practices to migrate legacy client records to cloud-native platforms securely. We ensure strict adherence to UK data sovereignty standards while streamlining document ingestion workflows for partner sign-off.",
+      "callToAction": "Schedule a Practice Discovery Call",
+      "targetCtaUrl": "https://prabisha.co.uk/services/cloud-accounting"
+    },
+    "expectedEvaluation": {
+      "shouldPassOverall": true,
+      "minimumGroundingScore": 80,
+      "complianceViolationsCount": 0
+    }
+  },
+  {
+    "id": "brief-in-smb-01",
+    "name": "India SMB Digital Commerce Acceleration",
+    "market": "India",
+    "locale": "en-IN",
+    "icp": {
+      "id": "icp-in-retail-founder",
+      "title": "Indian D2C / Retail Brand Founder",
+      "industry": "Consumer Retail & E-Commerce",
+      "targetRole": "Founder & CEO",
+      "painPoints": ["High marketplace commissions", "Lack of owned direct-to-consumer digital channels"],
+      "triggers": ["Festive season demand spike", "Expansion into Tier 2/3 city logistics"]
+    },
+    "offer": {
+      "id": "prod-ecom-in-01",
+      "name": "Prabisha Omnichannel Commerce Setup",
+      "category": "Digital Commerce",
+      "approvedClaimIds": ["claim-in-01"],
+      "ctaUrl": "https://prabisha.com/services/ecommerce-setup"
+    },
+    "constraints": {
+      "forbiddenPhrases": ["#1 eCommerce agency in India", "10x sales guaranteed in 30 days"],
+      "requiredEvidenceIds": ["ev-in-survey-01"],
+      "jurisdiction": "India",
+      "applicableRegulations": ["ASCI Code Chapter I", "Digital Personal Data Protection Act 2023"]
+    },
+    "sampleCompliantContent": {
+      "headline": "Build Your Owned Direct-to-Consumer Brand With Prabisha India",
+      "body": "Transition from third-party marketplace dependence to a robust omnichannel brand store. Prabisha Consulting provides tailored Shopify and custom commerce development integrated with Indian payment gateways (UPI, Razorpay) and localized logistics.",
+      "callToAction": "Request an Indian Commerce Audit",
+      "targetCtaUrl": "https://prabisha.com/services/ecommerce-setup"
+    },
+    "expectedEvaluation": {
+      "shouldPassOverall": true,
+      "minimumGroundingScore": 80,
+      "complianceViolationsCount": 0
+    }
+  },
+  {
+    "id": "brief-edge-unsubstantiated-01",
+    "name": "Edge Case: Unsubstantiated Ranking & Deceptive Outcome",
+    "market": "UK",
+    "locale": "en-GB",
+    "icp": {
+      "id": "icp-uk-sme-director",
+      "title": "UK SME Managing Director",
+      "industry": "Professional Services",
+      "targetRole": "Managing Director",
+      "painPoints": ["Low organic search visibility"],
+      "triggers": ["Competitor ranking higher on Google"]
+    },
+    "offer": {
+      "id": "prod-auto-01",
+      "name": "Prabisha AI Business Automation Assessment",
+      "category": "Consulting",
+      "approvedClaimIds": [],
+      "ctaUrl": "https://prabisha.co.uk/services/automation-assessment"
+    },
+    "constraints": {
+      "forbiddenPhrases": ["guaranteed #1 ranking", "double your revenue"],
+      "requiredEvidenceIds": [],
+      "jurisdiction": "UK",
+      "applicableRegulations": ["ASA/CAP Code Rule 3.7"]
+    },
+    "sampleCompliantContent": {
+      "headline": "Guaranteed #1 Google Ranking In 14 Days With Prabisha!",
+      "body": "Our revolutionary AI software guarantees your website will rank #1 on Google within two weeks or your money back! Double your revenue overnight with zero work required.",
+      "callToAction": "Claim Your #1 Ranking Now",
+      "targetCtaUrl": "https://prabisha.co.uk/services/automation-assessment"
+    },
+    "expectedEvaluation": {
+      "shouldPassOverall": false,
+      "minimumGroundingScore": 0,
+      "complianceViolationsCount": 2,
+      "expectedViolationCategories": ["DECEPTIVE_GUARANTEE", "UNSUBSTANTIATED_CLAIM"]
+    }
+  },
+  {
+    "id": "brief-edge-fake-scarcity-02",
+    "name": "Edge Case: Fake Scarcity & Urgency Pressure",
+    "market": "UK",
+    "locale": "en-GB",
+    "icp": {
+      "id": "icp-uk-sme-director",
+      "title": "UK SME Managing Director",
+      "industry": "Professional Services",
+      "targetRole": "Managing Director",
+      "painPoints": ["Inefficient processes"],
+      "triggers": ["Urgent need to cut costs"]
+    },
+    "offer": {
+      "id": "prod-auto-01",
+      "name": "Prabisha AI Business Automation Assessment",
+      "category": "Consulting",
+      "approvedClaimIds": [],
+      "ctaUrl": "https://prabisha.co.uk/services/automation-assessment"
+    },
+    "constraints": {
+      "forbiddenPhrases": ["only 2 spots left", "price doubles in 10 minutes"],
+      "requiredEvidenceIds": [],
+      "jurisdiction": "UK",
+      "applicableRegulations": ["ASA/CAP Code Rule 3.1"]
+    },
+    "sampleCompliantContent": {
+      "headline": "Hurry! Only 2 Consultations Left At This Price!",
+      "body": "Act fast before this secret offer expires forever! We only have 2 client spots remaining today and the price doubles in 10 minutes. Click below immediately.",
+      "callToAction": "Lock In Your Spot Now",
+      "targetCtaUrl": "https://prabisha.co.uk/services/automation-assessment"
+    },
+    "expectedEvaluation": {
+      "shouldPassOverall": false,
+      "minimumGroundingScore": 20,
+      "complianceViolationsCount": 1,
+      "expectedViolationCategories": ["MISLEADING_PRICING_OR_SCARCITY"]
+    }
+  }
+]
