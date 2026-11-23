@@ -1,26 +1,63 @@
 'use client';
 
 import React from 'react';
-import { ShieldCheck, ExternalLink } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { ChevronRight } from 'lucide-react';
 
 export function Header() {
+  const pathname = usePathname();
+
+  // Dynamic breadcrumb resolution
+  const getBreadcrumb = () => {
+    switch (pathname) {
+      case '/':
+        return { cluster: 'Studio', page: 'Dashboard Overview' };
+      case '/campaigns':
+        return { cluster: 'Studio', page: 'Campaign Briefs & Content Studio' };
+      case '/calendar':
+        return { cluster: 'Studio', page: 'Editorial Calendar & Export' };
+      case '/icp':
+        return { cluster: 'Governance', page: 'ICP & Persona Manager' };
+      case '/knowledge':
+        return { cluster: 'Governance', page: 'Claims & Evidence Library' };
+      case '/compliance':
+        return { cluster: 'Governance', page: 'Compliance Rule Engine' };
+      case '/telemetry':
+        return { cluster: 'System', page: 'Telemetry & Golden Evaluation' };
+      case '/settings':
+        return { cluster: 'System', page: 'Model-Agnostic AI Gateway' };
+      default:
+        return { cluster: 'Studio', page: 'Workspace' };
+    }
+  };
+
+  const breadcrumb = getBreadcrumb();
+
   return (
     <header className="h-12 border-b border-[#E2E4E9] bg-white px-6 flex items-center justify-between text-xs shrink-0 z-20">
-      <div className="flex items-center space-x-3">
-        <span className="font-semibold text-slate-800">
-          Workspace: <span className="font-mono text-slate-600 font-normal">prabisha-hq</span>
+      {/* Current Page Breadcrumb (Left) */}
+      <div className="flex items-center space-x-2 text-slate-500 font-medium">
+        <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">
+          {breadcrumb.cluster}
         </span>
-        <span className="text-[#E2E4E9]">|</span>
-        <div className="inline-flex items-center space-x-1.5 text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px] font-medium">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>UK (ASA/CAP) & India (ASCI) Verified</span>
-        </div>
+        <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+        <span className="text-slate-900 font-semibold">{breadcrumb.page}</span>
       </div>
 
-      <div className="flex items-center space-x-4 text-slate-500 text-[11px]">
-        <span className="font-mono">P95 SLA &lt; 500ms</span>
-        <span className="text-[#E2E4E9]">|</span>
-        <span className="font-mono text-slate-700 font-medium">Model: Gemini 1.5 Pro / GPT-4o Ready</span>
+      {/* Relocated Grounded Intelligence Status Badge (Right) */}
+      <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 text-slate-700 bg-[#FAF9F6] border border-[#E2E4E9] px-2.5 py-1 rounded-[4px]">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="text-[11px] font-mono font-medium text-slate-800">
+            Grounded Intelligence &amp; Compliance Active
+          </span>
+          <span className="text-[10px] font-mono bg-emerald-50 text-emerald-800 px-1 py-0.2 rounded border border-emerald-200">
+            UK (ASA) • IN (ASCI)
+          </span>
+        </div>
       </div>
     </header>
   );
