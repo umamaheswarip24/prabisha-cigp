@@ -104,9 +104,10 @@ export function CampaignView({
       });
       const data = await res.json();
       if (data.success) {
+        const newAssets = data.pack?.assets || data.campaign?.assets || [];
         setCampaigns(
           campaigns.map((c) =>
-            c.id === activeCampaign.id ? { ...c, assets: data.pack.assets } : c
+            c.id === activeCampaign.id ? { ...c, assets: newAssets } : c
           )
         );
       } else {

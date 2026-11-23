@@ -240,10 +240,31 @@ Constraints:
       });
     }
 
+    // 6. Fetch fully hydrated campaign with versions for immediate UI rendering
+    const updatedCampaign = await prisma.campaign.findUnique({
+      where: { id: campaign.id },
+      include: {
+        icp: true,
+        assets: {
+          include: {
+            versions: {
+              orderBy: { versionNumber: 'desc' },
+              take: 1,
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
     return NextResponse.json({
       success: true,
       campaignId: campaign.id,
       generatedAssets,
+      campaign: updatedCampaign,
+      pack: {
+        assets: updatedCampaign?.assets || [],
+      },
     });
   } catch (error) {
     console.error('Error generating campaign content:', error);

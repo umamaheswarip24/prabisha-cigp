@@ -46,6 +46,17 @@ export function CalendarView({ initialAssets, campaigns }: CalendarViewProps) {
   const [utmCampaign, setUtmCampaign] = useState('uk_sme_ai_automation');
   const [utmResult, setUtmResult] = useState<any | null>(null);
 
+  // Helper for safe ISO date comparison
+  const matchesDate = (dateVal: any, datePrefix: string) => {
+    if (!dateVal) return false;
+    try {
+      const isoStr = typeof dateVal === 'string' ? dateVal : new Date(dateVal).toISOString();
+      return isoStr.startsWith(datePrefix);
+    } catch {
+      return false;
+    }
+  };
+
   // Generate 7-day rolling timeline strip starting from today
   const timelineDays = useMemo(() => {
     const today = new Date();
@@ -53,7 +64,7 @@ export function CalendarView({ initialAssets, campaigns }: CalendarViewProps) {
       const d = new Date(today);
       d.setDate(today.getDate() + idx);
       const dateStr = d.toISOString().split('T')[0];
-      const count = assets.filter((a) => a.scheduledDate && a.scheduledDate.startsWith(dateStr)).length;
+      const count = assets.filter((a) => matchesDate(a.scheduledDate, dateStr)).length;
       return {
         idx,
         date: d,
@@ -74,7 +85,7 @@ export function CalendarView({ initialAssets, campaigns }: CalendarViewProps) {
       if (statusFilter !== 'ALL' && asset.status !== statusFilter) return false;
       if (selectedDayOffset !== null) {
         const targetDay = timelineDays[selectedDayOffset];
-        if (!asset.scheduledDate || !asset.scheduledDate.startsWith(targetDay.dateStr)) {
+        if (!matchesDate(asset.scheduledDate, targetDay.dateStr)) {
           return false;
         }
       }
